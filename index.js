@@ -26,27 +26,27 @@ async function launchBrowser() {
   // @TODO: wait for Mapbox-GL to be ready and map initialized
 }
 
-async function fetchPicture({
-  width = 400,
-  height = 400,
-  center = [0, 0],
-  zoom = 3,
-} = {}) {
+async function fetchPicture({ width, height, center, zoom, type }) {
   await page.setViewport({ width, height });
   await page.evaluate(view => {
     document.body.classList.add('loading');
     map.jumpTo(view);
   }, { zoom, center });
   await page.waitFor('body.loading', { hidden: true });
-  return await page.screenshot({ format: 'jpg' });  // returns a Buffer
+  return await page.screenshot({ type });  // returns a Buffer
 }
 
+const mimeTypes = {
+  'jpeg': 'image/jpeg',
+  'png': 'image/png',
+}
 function parseQuery(query) {
   return {
-    width: query.width ? Number(query.width) : undefined,
-    height: query.height ? Number(query.height) : undefined,
-    zoom: query.zoom ? Number(query.zoom) : undefined,
-    center: (query.center ? query.center.split(',').map(Number) : undefined),
+    width: query.width ? Number(query.width) : 400,
+    height: query.height ? Number(query.height) : 400,
+    zoom: query.zoom ? Number(query.zoom) : 3,
+    center: (query.center ? query.center.split(',').map(Number) : [0, 0]),
+    type: Object.keys(mimeTypes).includes(query.type) ? query.type : 'jpeg',
   };
 }
 
@@ -57,7 +57,7 @@ launchBrowser().then(() => {
   app.get('/*', (req, res) => {
     const params = parseQuery(req.query);
     fetchPicture(params).then(buffer => {
-      res.contentType('image/jpeg');
+      res.contentType(mimeTypes[params.type]);
       res.end(buffer, 'binary');
     })
   });
