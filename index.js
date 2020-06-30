@@ -47,7 +47,7 @@ function parseQuery(query) {
     height: query.height ? Number(query.height) : 400,
     zoom: query.zoom ? Number(query.zoom) : 3,
     center: (query.center ? query.center.split(',').map(Number) : [0, 0]),
-    type: Object.keys(mimeTypes).includes(query.type) ? query.type : 'jpeg',
+    type: Object.keys(mimeTypes).includes(query.type) ? query.type : 'png',
   };
 }
 
