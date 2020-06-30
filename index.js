@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const puppeteer = require('puppeteer');
 
+const port = process.env.PORT || 3000;
+
 app.use(function(req, res, next) {
     console.log(new Date().toISOString(), req.originalUrl);
     next();
@@ -22,7 +24,7 @@ async function launchBrowser() {
     ]
   });
   page = await browser.newPage();
-  await page.goto('http://localhost:3666/page.html');
+  await page.goto(`http://localhost:${port}/page.html`);
 }
 
 async function fetchPicture({ width, height, center, zoom, type }) {
@@ -49,7 +51,6 @@ function parseQuery(query) {
   };
 }
 
-const port = process.env.PORT || 3000;
 app.listen(port);
 
 launchBrowser().then(() => {
