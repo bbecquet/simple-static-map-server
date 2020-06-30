@@ -12,7 +12,15 @@ app.use(express.static(__dirname + '/page'));
 
 let page;
 async function launchBrowser() {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({
+    headless: false,
+    args: [
+      '--headless',
+      '--hide-scrollbars',
+      '--mute-audio',
+      '--use-gl=egl',
+    ]
+  });
   page = await browser.newPage();
   await page.goto('http://localhost:3666/page.html');
   // @TODO: wait for Mapbox-GL to be ready and map initialized
