@@ -23,7 +23,6 @@ async function launchBrowser() {
   });
   page = await browser.newPage();
   await page.goto('http://localhost:3666/page.html');
-  // @TODO: wait for Mapbox-GL to be ready and map initialized
 }
 
 async function fetchPicture({ width, height, center, zoom, type }) {
