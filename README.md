@@ -4,7 +4,7 @@ This project comes from a silly idea: creating a raster map web server, using [M
 
 Under the hood, it launches a headless Chromium browser with Puppeteer, go to a special page with a Mapbox GL JS map instance, and takes screenshots to server as images.
 
-*Note: for now uses the Qwant Maps style*
+*Note: for now uses the [Qwant Maps](https://www.qwant.com/maps) style*
 
 ## Usage
 
