@@ -1,4 +1,6 @@
-const map = new mapboxgl.Map({
+import { Map } from 'https://cdn.skypack.dev/maplibre-gl';
+
+const map = new Map({
   hash: false,
   maxZoom: 20,
   attributionControl: false,
