@@ -42,7 +42,7 @@ async function fetchPicture({ width, height, center, zoom, type }) {
     document.body.classList.add('loading');
     map.jumpTo(view);
   }, { zoom, center });
-  await page.waitFor('body.loading', { hidden: true });
+  await page.waitForSelector('body.loading', { hidden: true });
   return await page.screenshot({ type });  // returns a Buffer
 }
 
