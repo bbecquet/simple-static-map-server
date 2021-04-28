@@ -1,8 +1,8 @@
-# Mapbox GL JS-based rasterizer
+# Map Web GL JS rasterizer
 
-This project comes from a silly idea: creating a raster map web server, using [Mapbox GL JS](https://github.com/mapbox/mapbox-gl-js) as a rendering engine instead of the [Mapbox GL native](https://github.com/mapbox/mapbox-gl-native).
+This project comes from a silly idea: creating a raster map web server, using the browser lib [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js) as a rendering engine instead of the low-level [MapLibre GL native](https://github.com/maplibre/maplibre-gl-native) lib.
 
-Under the hood, it launches a headless Chromium browser with Puppeteer, go to a special page with a Mapbox GL JS map instance, and takes screenshots to server as images.
+Under the hood, it launches a headless Chromium browser with [Puppeteer](https://github.com/puppeteer/puppeteer), go to a special page with a Maplibre GL JS map instance, and takes screenshots to serve as images.
 
 *Note: for now uses the [Qwant Maps](https://www.qwant.com/maps) style*
 
