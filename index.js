@@ -16,7 +16,9 @@ app.use(function(req, res, next) {
 app.use(express.static(__dirname + '/page'));
 
 app.get('/map.html', function (req, res) {
-  res.render('map', { });
+  res.render('map', {
+    attribution: 'Qwant Maps © OpenMapTiles © OSM contributors',
+  });
 })
 
 let page;
