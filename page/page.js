@@ -1,4 +1,4 @@
-import { Map } from 'https://cdn.skypack.dev/maplibre-gl';
+import { Map } from 'https://cdn.skypack.dev/maplibre-gl@1';
 
 const map = new Map({
   hash: false,
