@@ -18,13 +18,31 @@ app.use(function(req, res, next) {
 app.use(express.static(__dirname + '/page'));
 
 app.get('/map.html', function (req, res) {
-  res.render('map', {
-    attribution: 'Qwant Maps © OpenMapTiles © OSM contributors',
-  });
-})
+  res.render('map');
+});
 
-let page;
-async function launchBrowser() {
+function parseMapStyles() {
+  return new Promise((resolve, reject) => { 
+    fs.readFile(path.join(__dirname, 'mapstyles.json'), (error, json) => {
+      if (error) reject(error);
+      else resolve(JSON.parse(json));
+    });
+  });
+}
+
+async function launchStyleTab(browser, { name, styleUrl, attribution }) {
+  console.log(` - ${name}`);
+  const page = await browser.newPage();
+  await page.goto(`http://localhost:${port}/map.html`);
+  await page.evaluate(({ styleUrl, attribution }) => {
+    map.setStyle(styleUrl);
+    document.getElementById('attribution').innerHTML = attribution;
+  }, { styleUrl, attribution });
+  return { name, page };
+}
+
+let tabs;
+async function launchBrowser(styles) {
   const browser = await puppeteer.launch({
     headless: false,
     args: [
@@ -34,12 +52,22 @@ async function launchBrowser() {
       '--use-gl=egl',
     ]
   });
-  page = await browser.newPage();
-  await page.goto(`http://localhost:${port}/map.html`);
+  console.log('Preparing tabs for styles…')
+  tabs = await Promise.all(styles.map(style => launchStyleTab(browser, style)));
+}
+
+const getPage = styleName => {
+  let tab = tabs.find(tab => tab.name === styleName);
+  if (!tab) {
+    console.warn(`Unknown style name '${styleName}'. Fallback to first style '${tabs[0].name}'.`);
+    tab = tabs[0];
+  }
+  return tab.page;
 }
 
 const errorImage = fs.readFileSync(path.join(__dirname, 'imgs/error.png'));
-async function fetchPicture({ width, height, center, zoom, type }) {
+async function fetchPicture({ width, height, center, zoom, type, style }) {
+  const page = getPage(style);
   await page.setViewport({ width, height });
   const error = await page.evaluate(view => {
     document.body.classList.add('loading');
@@ -65,33 +93,38 @@ const mimeTypes = {
   'png': 'image/png',
 }
 
-function parseQuery(query) {
+function parseQuery(query, styles) {
   return {
     width: Number(query.width) || 400,
     height: Number(query.height) || 400,
     zoom: Number(query.zoom) || 3,
     center: query.center ? query.center.split(',').map(Number) : [0, 0],
     type: Object.keys(mimeTypes).includes(query.type) ? query.type : 'png',
+    style: query.style || styles[0].name,
   };
 }
 
 app.listen(port);
 
-launchBrowser().then(() => {
-  app.get('/*', (req, res) => {
-    const params = parseQuery(req.query);
-    fetchPicture(params).then(({ error, buffer }) => {
-      if (error) {
-        res
-          .status(400)
-          .contentType(mimeTypes[params.type])
-          .end(buffer, 'binary');
-      } else {
-        res
-          .contentType(mimeTypes[params.type])
-          .end(buffer, 'binary');
-      }
+parseMapStyles()
+  .then(styles => {
+    launchBrowser(styles)
+    .then(() => {
+      app.get('/*', (req, res) => {
+        const params = parseQuery(req.query, styles);
+        fetchPicture(params).then(({ error, buffer }) => {
+          if (error) {
+            res
+              .status(400)
+              .contentType('png')
+              .end(buffer, 'binary');
+          } else {
+            res
+              .contentType(mimeTypes[params.type])
+              .end(buffer, 'binary');
+          }
+        })
+      });
+      console.log('-----\nSite served on http://localhost:' + port + '\n-----');
     })
   });
-  console.log('-----\nSite served on http://localhost:' + port + '\n-----');
-});

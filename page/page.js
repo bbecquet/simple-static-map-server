@@ -5,8 +5,7 @@ const map = new Map({
   maxZoom: 20,
   attributionControl: false,
   container: document.getElementById('map'),
-  style: 'https://www.qwant.com/maps/style.json',
-  center: [2.85, 48.35],
+  center: [0, 0],
   zoom: 9,
   interactive: false,
 });

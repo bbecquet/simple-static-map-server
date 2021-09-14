@@ -1,0 +1,12 @@
+[
+  {
+    "name": "maptiler",
+    "styleUrl": "https://api.maptiler.com/maps/pastel/style.json?key=GET_YOUR_OWN_KEY",
+    "attribution": "© MapTiler © OSM contributors"
+  },
+  {
+    "name": "qwantmaps",
+    "styleUrl": "https://www.qwant.com/maps/style.json",
+    "attribution": "© Qwant Maps © OpenMapTiles © OSM contributors"
+  }
+]
