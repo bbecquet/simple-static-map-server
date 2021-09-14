@@ -6,9 +6,6 @@ const path = require('path');
 
 const port = process.env.PORT || 3000;
 
-app.set('views', './views');
-app.set('view engine', 'pug');
-
 app.use(function(req, res, next) {
     console.log(new Date().toISOString(), req.originalUrl);
     next();
@@ -16,10 +13,6 @@ app.use(function(req, res, next) {
 
 // serve the page itself for internal use… beware of routing loops 
 app.use(express.static(__dirname + '/page'));
-
-app.get('/map.html', function (req, res) {
-  res.render('map');
-});
 
 function parseMapStyles() {
   return new Promise((resolve, reject) => { 
