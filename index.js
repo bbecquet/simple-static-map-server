@@ -34,7 +34,6 @@ async function launchStyleTab(browser, { name, styleUrl, attribution }) {
   return { name, page };
 }
 
-let tabs;
 async function launchBrowser(styles) {
   const browser = await puppeteer.launch({
     headless: false,
@@ -46,10 +45,10 @@ async function launchBrowser(styles) {
     ]
   });
   console.log('Preparing tabs for styles…')
-  tabs = await Promise.all(styles.map(style => launchStyleTab(browser, style)));
+  return await Promise.all(styles.map(style => launchStyleTab(browser, style)));
 }
 
-const getPage = styleName => {
+const getPage = (tabs, styleName) => {
   let tab = tabs.find(tab => tab.name === styleName);
   if (!tab) {
     console.warn(`Unknown style name '${styleName}'. Fallback to first style '${tabs[0].name}'.`);
@@ -59,8 +58,7 @@ const getPage = styleName => {
 }
 
 const errorImage = fs.readFileSync(path.join(__dirname, 'imgs/error.png'));
-async function fetchPicture({ width, height, center, zoom, type, style }) {
-  const page = getPage(style);
+async function fetchPicture(page, { width, height, center, zoom, type }) {
   await page.setViewport({ width, height });
   const error = await page.evaluate(view => {
     document.body.classList.add('loading');
@@ -86,38 +84,41 @@ const mimeTypes = {
   'png': 'image/png',
 }
 
-function parseQuery(query, styles) {
+function parseQuery(query, styleNames) {
   return {
     width: Number(query.width) || 400,
     height: Number(query.height) || 400,
     zoom: Number(query.zoom) || 3,
     center: query.center ? query.center.split(',').map(Number) : [0, 0],
     type: Object.keys(mimeTypes).includes(query.type) ? query.type : 'png',
-    style: query.style || styles[0].name,
+    style: query.style || styleNames[0],
   };
 }
 
 app.listen(port);
 
 parseMapStyles()
-  .then(styles => {
-    launchBrowser(styles)
-    .then(() => {
-      app.get('/*', (req, res) => {
-        const params = parseQuery(req.query, styles);
-        fetchPicture(params).then(({ error, buffer }) => {
-          if (error) {
-            res
-              .status(400)
-              .contentType('png')
-              .end(buffer, 'binary');
-          } else {
-            res
-              .contentType(mimeTypes[params.type])
-              .end(buffer, 'binary');
-          }
-        })
-      });
-      console.log('-----\nSite served on http://localhost:' + port + '\n-----');
-    })
+  .then(launchBrowser)
+  .then(tabs => {
+    app.get('/*', (req, res) => {
+      const styleNames = tabs.map(tab => tab.name);
+      const params = parseQuery(req.query, styleNames);
+      const tab = getPage(tabs, params.style);
+
+      fetchPicture(tab, params).then(({ error, buffer }) => {
+        if (error) {
+          res
+            .status(400)
+            .contentType(mimeTypes['png'])
+            .end(buffer, 'binary');
+        } else {
+          res
+            .contentType(mimeTypes[params.type])
+            .end(buffer, 'binary');
+        }
+      })
+    });
+  })
+  .then(() => {
+    console.log('-----\nSite served on http://localhost:' + port + '\n-----');
   });
