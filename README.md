@@ -6,7 +6,7 @@ Under the hood, it launches a headless Chromium browser with [Puppeteer](https:/
 
 ## Example
 
-Request: `http://localhost:3000/?width=600&height=300&zoom=12&center=-3.825,57.185&style=qwantmaps`
+Request: `http://localhost:3000/map?width=600&height=300&zoom=12&center=-3.825,57.185&style=qwantmaps`
 
 Result:
 

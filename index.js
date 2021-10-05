@@ -100,7 +100,7 @@ app.listen(port);
 parseMapStyles()
   .then(launchBrowser)
   .then(tabs => {
-    app.get('/*', (req, res) => {
+    app.get('/map', (req, res) => {
       const styleNames = tabs.map(tab => tab.name);
       const params = parseQuery(req.query, styleNames);
       const tab = getPage(tabs, params.style);
