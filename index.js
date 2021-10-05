@@ -57,7 +57,6 @@ const getPage = (tabs, styleName) => {
   return tab.page;
 }
 
-const errorImage = fs.readFileSync(path.join(__dirname, 'imgs/error.png'));
 async function fetchPicture(page, { width, height, center, zoom, type, timeout }) {
   await page.setViewport({ width, height });
   const error = await page.evaluate(view => {
@@ -72,12 +71,12 @@ async function fetchPicture(page, { width, height, center, zoom, type, timeout }
     }
   }, { zoom, center });
   if (error) {
-    return { error, buffer: errorImage };
+    return { error };
   }
   try {
     await page.waitForSelector('body.loading', { hidden: true, timeout });
   } catch {
-    return { error: 'Timeout', buffer: errorImage };
+    return { error: `Timeout exceeded (${timeout}ms)` };
   }
   const scrShot = await page.screenshot({ type });  // returns a Buffer
   return { buffer: scrShot };
@@ -114,8 +113,7 @@ parseMapStyles()
         if (error) {
           res
             .status(400)
-            .contentType(mimeTypes['png'])
-            .end(buffer, 'binary');
+            .send(error);
         } else {
           res
             .contentType(mimeTypes[params.type])
