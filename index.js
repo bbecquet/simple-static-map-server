@@ -58,7 +58,7 @@ const getPage = (tabs, styleName) => {
 }
 
 const errorImage = fs.readFileSync(path.join(__dirname, 'imgs/error.png'));
-async function fetchPicture(page, { width, height, center, zoom, type }) {
+async function fetchPicture(page, { width, height, center, zoom, type, timeout }) {
   await page.setViewport({ width, height });
   const error = await page.evaluate(view => {
     document.body.classList.add('loading');
@@ -74,7 +74,11 @@ async function fetchPicture(page, { width, height, center, zoom, type }) {
   if (error) {
     return { error, buffer: errorImage };
   }
-  await page.waitForSelector('body.loading', { hidden: true });
+  try {
+    await page.waitForSelector('body.loading', { hidden: true, timeout });
+  } catch {
+    return { error: 'Timeout', buffer: errorImage };
+  }
   const scrShot = await page.screenshot({ type });  // returns a Buffer
   return { buffer: scrShot };
 }
@@ -92,6 +96,7 @@ function parseQuery(query, styleNames) {
     center: query.center ? query.center.split(',').map(Number) : [0, 0],
     type: Object.keys(mimeTypes).includes(query.type) ? query.type : 'png',
     style: query.style || styleNames[0],
+    timeout: Number(query.timeout) || 30000,
   };
 }
 

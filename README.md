@@ -38,7 +38,7 @@ $ PORT=3666 node index.js
 
 ### Requests
 
-Then go to `http://localhost:<port>/` and send queries with those query string parameters:
+Then go to `http://localhost:<port>/map` and send queries with those query string parameters:
 
 |Parameter|Description|Default|
 |---|---|---|
@@ -48,4 +48,5 @@ Then go to `http://localhost:<port>/` and send queries with those query string p
 |`width`|Image width in pixels|`400`|
 |`height`|Image height in pixels|`400`|
 |`type`|`png` or `jpeg`|`png`|
+|`timeout`|Query timeout in milliseconds|`30000`|
 
