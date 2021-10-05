@@ -18,9 +18,9 @@ Result:
 
 The [`mapstyles.json`](./mapstyles.json) file contains an array of available map styles. Each is defined by 3 properties:
 
- - `name`: the style name, used to refer it in 
- - `styleUrl`: the url of the JSON file of the vector map style
- - `attribution`: the attribution string, to display the copyright information
+ - `name`: the style name, used to specify which style to render for multiple style instances
+ - `styleUrl`: the url of the vector map style definition in JSON
+ - `attribution`: the attribution string, to display proper copyright information on each generated image
 
 You should replace the styles in the current file by styles you own.
 
