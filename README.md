@@ -1,4 +1,4 @@
-# Map Web GL JS rasterizer
+# simple-static-map-server
 
 This project comes from a silly idea: creating a raster map web server, using the browser lib [MapLibre GL JS](https://github.com/maplibre/maplibre-gl-js) as a rendering engine instead of the low-level [MapLibre GL native](https://github.com/maplibre/maplibre-gl-native) lib.
 

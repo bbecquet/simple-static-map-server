@@ -1,6 +1,6 @@
 {
-  "name": "mbgljs-rasterizer",
-  "version": "0.0.1",
+  "name": "simple-static-map-server",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
