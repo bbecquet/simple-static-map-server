@@ -18,11 +18,16 @@ Result:
 
 The [`mapstyles.json`](./mapstyles.json) file contains an array of available map styles. Each is defined by 3 properties:
 
- - `name`: the style name, used to specify which style to render for multiple style instances
- - `styleUrl`: the url of the vector map style definition in JSON
- - `attribution`: the attribution string, to display proper copyright information on each generated image
+- `name`: the style name, used to specify which style to render for multiple style instances
+- `styleUrl`: the url of the vector map style definition in JSON
+- `attribution`: the attribution string, to display proper copyright information on each generated image
 
-You should replace the styles in the current file by styles you own.
+You should replace the styles in the current file by styles you own or have the rights to use.
+
+#### Raster tiles
+
+Alternatively, to use raster tiles, you can define a `rasterTiles` object in place of `styleUrl`.
+See the current [`mapstyles.json`](./mapstyles.json) file for an example.
 
 ### Starting the server
 
@@ -40,13 +45,12 @@ $ PORT=3666 node index.js
 
 Then go to `http://localhost:<port>/map` and send queries with those query string parameters:
 
-|Parameter|Description|Default|
-|---|---|---|
-|`style`|Name of the map style, as defined in the `mapstyles.json` file |First defined style|
-|`center`|Coordinates of the center, as `<longitude>,<latitude>`|`0,0`|
-|`zoom`|Zoom level|`3`|
-|`width`|Image width in pixels|`400`|
-|`height`|Image height in pixels|`400`|
-|`type`|`png` or `jpeg`|`png`|
-|`timeout`|Query timeout in milliseconds|`30000`|
-
+| Parameter | Description                                                    | Default             |
+| --------- | -------------------------------------------------------------- | ------------------- |
+| `style`   | Name of the map style, as defined in the `mapstyles.json` file | First defined style |
+| `center`  | Coordinates of the center, as `<longitude>,<latitude>`         | `0,0`               |
+| `zoom`    | Zoom level                                                     | `3`                 |
+| `width`   | Image width in pixels                                          | `400`               |
+| `height`  | Image height in pixels                                         | `400`               |
+| `type`    | `png` or `jpeg`                                                | `png`               |
+| `timeout` | Query timeout in milliseconds                                  | `30000`             |

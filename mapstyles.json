@@ -8,5 +8,23 @@
     "name": "qwantmaps",
     "styleUrl": "https://www.qwant.com/maps/style.json",
     "attribution": "© Qwant Maps © OpenMapTiles © OSM contributors"
+  },
+  {
+    "name": "osm",
+    "attribution": "© OpenStreetMap contributors",
+    "rasterTiles": {
+      "urls": ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      "minzoom": 0,
+      "maxzoom": 19
+    }
+  },
+  {
+    "name": "watercolor",
+    "attribution": "Map style by Stamen Design, Data © OpenStreetMap contributors",
+    "rasterTiles": {
+      "urls": ["https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg"],
+      "minzoom": 0,
+      "maxzoom": 18
+    }
   }
 ]
