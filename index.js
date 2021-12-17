@@ -146,6 +146,25 @@ parseMapStyles()
         }
       });
     });
+
+    app.get('/', (req, res) => {
+      const home = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"/><title>Static map server</title></head>
+<body>
+    <h1>Available map styles</h1>
+    $$$STYLES$$$
+</body>
+</html>`;
+      res
+        .contentType('text/html; charset=UTF-8')
+        .send(
+          home.replace(
+            '$$$STYLES$$$',
+            `<ul>${tabs.map(tab => `<li>${tab.name}</li>`).join('')}</ul>`
+          )
+        );
+    });
   })
   .then(() => {
     console.log('-----\nSite served on http://localhost:' + port + '\n-----');
