@@ -68,7 +68,7 @@ async function launchStyleTab(browser, { name, styleUrl, rasterTiles, attributio
 async function launchBrowser(styles) {
   const browser = await puppeteer.launch({
     headless: false,
-    args: ['--headless', '--hide-scrollbars', '--mute-audio', '--use-gl=egl'],
+    args: ['--headless', '--hide-scrollbars', '--mute-audio', '--use-gl=egl', '--no-sandbox', '--disable-setuid-sandbox'],
   });
   console.log('Preparing tabs for styles…');
   return await Promise.all(styles.map(style => launchStyleTab(browser, style)));
