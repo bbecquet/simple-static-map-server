@@ -12,5 +12,20 @@
     "name": "maptiler",
     "styleUrl": "https://api.maptiler.com/maps/pastel/style.json?key=GET_YOUR_OWN_KEY",
     "attribution": "© MapTiler © OSM contributors"
+  },
+  {
+    "name": "ofm-positron",
+    "styleUrl": "https://tiles.openfreemap.org/styles/positron",
+    "attribution": "OpenFreeMap © OpenMapTiles Data from OpenStreetMap"
+  },
+  {
+    "name": "ofm-bright",
+    "styleUrl": "https://tiles.openfreemap.org/styles/bright",
+    "attribution": "OpenFreeMap © OpenMapTiles Data from OpenStreetMap"
+  },
+  {
+    "name": "ofm-liberty",
+    "styleUrl": "https://tiles.openfreemap.org/styles/liberty",
+    "attribution": "OpenFreeMap © OpenMapTiles Data from OpenStreetMap"
   }
 ]
