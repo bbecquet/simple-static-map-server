@@ -1,6 +1,6 @@
-import { Map } from 'https://cdn.skypack.dev/maplibre-gl@1';
+import * as M from 'maplibre-gl';
 
-const map = new Map({
+const map = new maplibregl.Map({
   hash: false,
   maxZoom: 20,
   attributionControl: false,

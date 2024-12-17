@@ -1,9 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <script type="module" src="https://cdn.skypack.dev/maplibre-gl/dist/maplibre-gl.js"></script>
-    <link href="https://cdn.skypack.dev/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+    <script type="importmap">
+      {
+        "imports": {
+          "maplibre-gl": "https://unpkg.com/maplibre-gl@^4.7.1/dist/maplibre-gl.js"
+        }
+      }
+    </script>
+    <link href="https://unpkg.com/maplibre-gl@^4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
     <link href="./page.css" rel="stylesheet" />
   </head>
   <body>
